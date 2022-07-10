@@ -3,11 +3,15 @@ import { Col, FlexboxGrid, Footer as RSFooter, List } from 'rsuite';
 import FlexboxGridItem from 'rsuite/esm/FlexboxGrid/FlexboxGridItem';
 import ListItem from 'rsuite/esm/List/ListItem';
 
-const colStyle = { marginBottom: 5, display: 'flex', justifyContent: 'center' };
+const colStyle = {
+    marginBottom: 5,
+    display: 'flex',
+    justifyContent: 'center'
+};
 
 const Footer = () => (
     <RSFooter>
-        <List>
+        <List style={{ padding: 8 }}>
             <FlexboxGrid justify='space-between'>
                 <FlexboxGridItem as={Col} colspan={6} style={colStyle}>
                     <List>
@@ -37,7 +41,8 @@ const Footer = () => (
             <FlexboxGrid justify="center">
                 <FlexboxGridItem>
                     <p>
-                        &copy;{new Date().getFullYear()} THICC MEMES | All rights reserved | Terms Of Service | Privacy
+                        &copy;{new Date().getFullYear()} THICC MEMES
+                        | All rights reserved | Terms Of Service | Privacy
                     </p>
                 </FlexboxGridItem>
             </FlexboxGrid>

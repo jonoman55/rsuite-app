@@ -1,3 +1,4 @@
+// zustand docs -> https://github.com/pmndrs/zustand
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -6,7 +7,7 @@ import { THEME_TYPES } from '../constants';
 const { THEME_LIGHT, THEME_DARK } = THEME_TYPES;
 
 const store = (set) => ({
-    theme: THEME_LIGHT,
+    theme: THEME_LIGHT ? true : false,
     toggleTheme: () =>
         set((state) => ({
             theme: state.theme === THEME_LIGHT

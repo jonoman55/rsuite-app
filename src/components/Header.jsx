@@ -8,7 +8,9 @@ const { Item, Menu } = Nav;
 const Header = ({ theme, toggleTheme }) => (
     <RSHeader>
         <Navbar>
-            <Brand>THE GOAT COURSE</Brand>
+            <Brand style={{ cursor: 'pointer' }}>
+                THE GOAT COURSE
+            </Brand>
             <Nav>
                 <Item icon={<ArrowUp />}>Home</Item>
                 <Item icon={<Others />}>Modal</Item>
