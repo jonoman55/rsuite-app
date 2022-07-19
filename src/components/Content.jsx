@@ -3,8 +3,11 @@ import { Content as RSContent } from 'rsuite';
 
 const styles = {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%',
+    height: '100%'
 };
 
 const Content = (props) => (
