@@ -36,6 +36,7 @@ const styles = {
 };
 
 // TODO : Figure out how to hook up file type validation
+// DOCS : https://rsuitejs.com/components/form-validation/
 const Forms = () => {
     const toaster = useToaster();
     const formRef = useRef();
