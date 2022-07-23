@@ -3,20 +3,13 @@ import { Form } from "rsuite";
 
 const { Group, Control, ControlLabel, HelpText } = Form;
 
-const styles = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-};
-
 export const Field = forwardRef((props, ref) => {
-    const { name, message, label, accepter, error, ...rest } = props;
+    const { name, message, label, accepter, error, tooltip, ...rest } = props;
     return (
-        <Group ref={ref} className={error ? 'has-error' : ''} style={styles}>
+        <Group ref={ref} className={error ? 'has-error' : ''}>
             <ControlLabel>{label}</ControlLabel>
-            <Control name={name} accepter={accepter} errorMessage={error} {...rest} style={styles} />
-            <HelpText>{message}</HelpText>
+            <Control name={name} accepter={accepter} errorMessage={error} {...rest} />
+            <HelpText tooltip={tooltip}>{message}</HelpText>
         </Group>
     );
 });

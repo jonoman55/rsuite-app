@@ -1,94 +1,96 @@
-/* eslint-disable no-unused-vars */
-import { useRef, useState } from 'react';
-import { FlexboxGrid, Form, Notification, Schema, Uploader, useToaster } from 'rsuite';
+import React, { useRef, useState } from 'react';
+import { ButtonToolbar, Button, Form, useToaster, Notification } from 'rsuite';
+import { SchemaModel, StringType } from 'schema-typed'
 
-import { Field } from '../Field';
 import Content from '../Content';
-import { Message } from '../Message';
+import { Field } from '../Field';
+import { Textarea } from '../Textarea';
 
-const { Item } = FlexboxGrid;
-
-// function asyncCheckFileType(file) {
-//     return new Promise(resolve => {
-//       setTimeout(() => {
-//         if (/^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/.test(file)) {
-//           resolve(false);
-//         } else {
-//           resolve(true);
-//         }
-//       }, 500);
-//     });
-// };
-
-// const model = Schema.Model({
-//     name: Schema.Types.MixedType().addRule((value, data) => {
-//         return asyncCheckFileType(value);
-//     }, 'Please select a legal file type.')
-// });
-
-const styles = {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+const initialState = {
+    name: '',
+    email: '',
+    textarea: ''
 };
 
-// TODO : Figure out how to hook up file type validation
-// DOCS : https://rsuitejs.com/components/form-validation/
 const Forms = () => {
-    const toaster = useToaster();
     const formRef = useRef();
-    const [formError, setFormError] = useState({});
-    const [formValue, setFormValue] = useState({});
+    const toaster = useToaster();
 
-    console.log(formValue);
+    const [formValues, setFormValues] = useState(initialState);
 
-    const message = (
-        <Message duration={3000} type="error" message="Please select a legal file type." />
+    const model = SchemaModel({
+        name: StringType().isRequired("Full Name is required."),
+        email: StringType().isEmail("Email must be valid!").isRequired("Email is required."),
+        textarea: StringType().isRequired("Please provide a message.")
+    });
+
+    const error = (
+        <Notification duration={3000} type='error' header='Error'>
+            Please fill out the form properly!
+        </Notification>
     );
+
+    const success = (name) => (
+        <Notification duration={3000} type='success' header='Success'>
+            👋 {name}!!!
+        </Notification>
+    );
+
+    const handleSubmit = () => {
+        if (!formRef.current.check()) {
+            toaster.push(error, {
+                placement: 'topEnd'
+            });
+            return;
+        } else {
+            toaster.push(success(formValues.name), {
+                placement: 'topEnd'
+            });
+            setFormValues(initialState);
+        }
+    };
 
     return (
         <Content>
-            <FlexboxGrid style={styles}>
-                <Item colspan={12}>
-                    <Form
-                        ref={formRef}
-                        onChange={setFormValue}
-                        onCheck={setFormError}
-                        formError={formError}
-                        formDefaultValue={formValue}
-                        // model={model}
-                        style={styles}
-                    >
-                        <Field
-                            onUpload={(e) => {
-                                if (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(e.name.toString().toLowerCase())) {
-                                    toaster.push(message, {
-                                        placement: 'topEnd'
-                                    });
-                                }
-                            }}
-                            onError={(e) => {
-                                toaster.push(message, {
-                                    placement: 'topEnd'
-                                });
-                            }}
-                            onSuccess={() => {
-                                
-                            }}
-                            listType="picture-text"
-                            name="file"
-                            label="Upload A Picture"
-                            error={formError.name}
-                            accepter={Uploader}
-                            action="//jsonplaceholder.typicode.com/posts/"
-                            accept="image/*"
-                        />
-                    </Form>
-                </Item>
-            </FlexboxGrid>
+            <Form
+                fluid
+                ref={formRef}
+                model={model}
+                formValue={formValues}
+                onChange={setFormValues}
+                onSubmit={handleSubmit}
+                style={{ width: '25%' }}
+            >
+                <Field
+                    controlid='name'
+                    name='name'
+                    label='Name'
+                    message='Full Name is required'
+                    tooltip
+                />
+                <Field
+                    controlid='name'
+                    name='email'
+                    label='Email'
+                    message='Email is required'
+                    tooltip
+                />
+                <Field
+                    controlid='textarea'
+                    name='textarea'
+                    label='Enter a message'
+                    rows={6}
+                    accepter={Textarea}
+                />
+                <ButtonToolbar>
+                    <Button appearance='primary' type='submit'>
+                        Submit
+                    </Button>
+                    <Button appearance='default' onClick={() => setFormValues(initialState)}>
+                        Cancel
+                    </Button>
+                </ButtonToolbar>
+            </Form>
         </Content>
     );
 };
